@@ -1,0 +1,177 @@
+.spawn-root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+  animation: fadeIn 0.3s ease both;
+}
+
+/* Header */
+.spawn-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+  height: 56px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+.spawn-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+}
+.spawn-logo-box {
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  background: var(--text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.spawn-logo-box svg { color: var(--bg); }
+
+.new-btn {
+  font-family: var(--font);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-muted);
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  padding: 6px 14px;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+}
+.new-btn:hover {
+  border-color: var(--border-strong);
+  color: var(--text);
+}
+
+/* Content */
+.spawn-content {
+  flex: 1;
+  max-width: 1080px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 48px 32px 0;
+}
+
+/* Business headline */
+.spawn-headline {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 36px;
+  animation: fadeUp 0.4s ease both;
+}
+.spawn-emoji {
+  font-size: 40px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+.spawn-title {
+  font-size: clamp(22px, 3vw, 32px);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  color: var(--text);
+  line-height: 1.2;
+}
+.spawn-title-name {
+  color: var(--text);
+}
+.spawn-subtitle {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-top: 5px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.spawn-subtitle-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #16A34A;
+  display: inline-block;
+}
+
+/* Agent grid */
+.agents-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 14px;
+  margin-bottom: 0;
+}
+
+/* Dark CTA section — matches agent-messenger-landing's dark footer CTA */
+.spawn-cta {
+  margin-top: 60px;
+  background: var(--bg-dark);
+  padding: 56px 32px;
+}
+.cta-inner {
+  max-width: 1080px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+.cta-eyebrow {
+  font-size: 11px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.4);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.cta-title {
+  font-size: clamp(20px, 2.5vw, 28px);
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.02em;
+  margin-bottom: 8px;
+}
+.cta-sub {
+  font-size: 14px;
+  color: rgba(255,255,255,0.45);
+  max-width: 400px;
+}
+.cta-btn {
+  font-family: var(--font);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  background: #fff;
+  border: none;
+  border-radius: var(--radius-pill);
+  padding: 12px 28px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: opacity 0.15s, transform 0.15s;
+  flex-shrink: 0;
+}
+.cta-btn:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .spawn-content { padding: 32px 16px 0; }
+  .spawn-header { padding: 0 16px; }
+  .spawn-headline { gap: 12px; }
+  .spawn-emoji { font-size: 30px; }
+  .agents-grid { grid-template-columns: 1fr; }
+  .spawn-cta { padding: 40px 20px; }
+  .cta-inner { flex-direction: column; align-items: flex-start; }
+}

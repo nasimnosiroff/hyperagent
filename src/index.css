@@ -1,0 +1,80 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  /* Exact tokens from andersonscat.github.io/agent-messenger-landing */
+  --bg:            #F5F4F1;
+  --bg-card:       #FFFFFF;
+  --bg-soft:       #ECEAE5;
+  --bg-dark:       #0A0A0A;
+  --bg-dark-2:     #1F1F1F;
+  --border:        #E5E3DE;
+  --border-strong: #1A1A1A;
+  --accent:        #0A0A0A;
+  --text:          #0A0A0A;
+  --text-muted:    #6F6F6F;
+  --text-faint:    #9A9A9A;
+
+  --radius-card:  1.5rem;
+  --radius-btn:   0.875rem;
+  --radius-pill:  9999px;
+  --radius-sm:    0.625rem;
+
+  --font:         'DM Sans', -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
+  --font-mono:    'DM Mono', 'SF Mono', ui-monospace, monospace;
+
+  --shadow-card:  0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-hover: 0 4px 16px rgba(0,0,0,0.10);
+}
+
+html, body, #root {
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.97); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes slideInCard {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+@keyframes scanline {
+  0%   { transform: translateY(-4px) scaleX(0.3); opacity: 0; }
+  30%  { opacity: 1; }
+  70%  { opacity: 1; }
+  100% { transform: translateY(4px) scaleX(0.3); opacity: 0; }
+}
