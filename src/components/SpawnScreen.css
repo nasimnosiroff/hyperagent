@@ -61,24 +61,29 @@
   max-width: 1080px;
   width: 100%;
   margin: 0 auto;
-  padding: 48px 32px 0;
+  padding: 44px 32px 0;
 }
 
 /* Business headline */
 .spawn-headline {
   display: flex;
   align-items: center;
-  gap: 16px;
-  margin-bottom: 36px;
+  gap: 18px;
+  margin-bottom: 32px;
+  padding: 20px 24px;
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
+  border-radius: 16px;
   animation: fadeUp 0.4s ease both;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
 }
 .spawn-emoji {
-  font-size: 40px;
+  font-size: 44px;
   line-height: 1;
   flex-shrink: 0;
 }
 .spawn-title {
-  font-size: clamp(22px, 3vw, 32px);
+  font-size: clamp(20px, 2.8vw, 28px);
   font-weight: 700;
   letter-spacing: -0.025em;
   color: var(--text);
@@ -96,11 +101,12 @@
   gap: 8px;
 }
 .spawn-subtitle-dot {
-  width: 4px;
-  height: 4px;
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
   background: #16A34A;
   display: inline-block;
+  animation: pulse 2s infinite;
 }
 
 /* Research sources history panel */
@@ -202,11 +208,31 @@
   color: var(--text-faint);
 }
 
+/* Grid header label */
+.agents-grid-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+  animation: fadeUp 0.4s ease 0.15s both;
+}
+.agents-grid-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+}
+.agents-grid-hint {
+  font-size: 11px;
+  color: var(--text-faint);
+}
+
 /* Agent grid */
 .agents-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
-  gap: 14px;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 16px;
   margin-bottom: 0;
 }
 

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import AgentCard from './AgentCard'
-import AgentModal from './AgentModal'
+import AgentPage from './AgentPage'
 import './SpawnScreen.css'
 
 export default function SpawnScreen({ business, agents, sources = [], onReset }) {
@@ -36,96 +36,100 @@ export default function SpawnScreen({ business, agents, sources = [], onReset })
         <button className="new-btn" onClick={onReset}>← New Business</button>
       </header>
 
-      <div className="spawn-content">
-        {/* Business headline */}
-        {business && (
-          <div className="spawn-headline">
-            <span className="spawn-emoji">{business.emoji}</span>
-            <div>
-              <h1 className="spawn-title">
-                Meet your team,{' '}
-                <span className="spawn-title-name">{business.name}</span>
-              </h1>
-              <p className="spawn-subtitle">
-                <span className="spawn-subtitle-dot" />
-                {allAgents.length} agents live · {business.businessType}
-              </p>
-            </div>
-          </div>
-        )}
-
-        {/* Research sources history */}
-        {sources.length > 0 && (
-          <div className="spawn-sources">
-            <button className="spawn-sources-header" onClick={() => setSourcesOpen(v => !v)}>
-              <span className="spawn-sources-title">
-                <SourcesIcon />
-                Research Sources
-                <span className="spawn-sources-badge">{sources.length}</span>
-              </span>
-              <span className="spawn-sources-chevron">{sourcesOpen ? '▲' : '▼'}</span>
-            </button>
-            {sourcesOpen && (
-              <div className="spawn-sources-list">
-                {sources.map((src, i) => (
-                  <div key={src.label + i} className="spawn-source-item" style={{ animationDelay: `${i * 0.05}s` }}>
-                    <div className="spawn-source-icon">
-                      <SourceIcon type={src.icon} />
-                    </div>
-                    <div className="spawn-source-info">
-                      <div className="spawn-source-label">{src.label}</div>
-                      <div className="spawn-source-url">{src.url}</div>
-                      <div className="spawn-source-snippet">{src.snippet}</div>
-                    </div>
-                  </div>
-                ))}
+      {selectedAgent ? (
+        <AgentPage
+          agent={selectedAgent}
+          business={business}
+          onBack={() => setSelectedAgent(null)}
+        />
+      ) : (
+        <>
+          <div className="spawn-content">
+            {/* Business headline */}
+            {business && (
+              <div className="spawn-headline">
+                <span className="spawn-emoji">{business.emoji}</span>
+                <div>
+                  <h1 className="spawn-title">
+                    Meet your team,{' '}
+                    <span className="spawn-title-name">{business.name}</span>
+                  </h1>
+                  <p className="spawn-subtitle">
+                    <span className="spawn-subtitle-dot" />
+                    {allAgents.length} agents live · {business.businessType}
+                  </p>
+                </div>
               </div>
             )}
-          </div>
-        )}
 
-        {/* Agent grid */}
-        <div className="agents-grid">
-          {allAgents.map((agent, i) => (
-            <AgentCard
-              key={agent.id}
-              agent={agent}
-              animDelay={i * 100}
-              onClick={() => setSelectedAgent(agent)}
-            />
-          ))}
-          <AgentCard
-            key="custom-add"
-            agent={{ id: 'custom', name: '', icon: 'plus', role: '', tasks: [] }}
-            animDelay={allAgents.length * 100}
-            isCustom
-            onCustomSubmit={handleCustomSubmit}
-          />
-        </div>
-      </div>
+            {/* Research sources history */}
+            {sources.length > 0 && (
+              <div className="spawn-sources">
+                <button className="spawn-sources-header" onClick={() => setSourcesOpen(v => !v)}>
+                  <span className="spawn-sources-title">
+                    <SourcesIcon />
+                    Research Sources
+                    <span className="spawn-sources-badge">{sources.length}</span>
+                  </span>
+                  <span className="spawn-sources-chevron">{sourcesOpen ? '▲' : '▼'}</span>
+                </button>
+                {sourcesOpen && (
+                  <div className="spawn-sources-list">
+                    {sources.map((src, i) => (
+                      <div key={src.label + i} className="spawn-source-item" style={{ animationDelay: `${i * 0.05}s` }}>
+                        <div className="spawn-source-icon">
+                          <SourceIcon type={src.icon} />
+                        </div>
+                        <div className="spawn-source-info">
+                          <div className="spawn-source-label">{src.label}</div>
+                          <div className="spawn-source-url">{src.url}</div>
+                          <div className="spawn-source-snippet">{src.snippet}</div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
 
-      {/* Dark CTA — matches reference landing page's dark section */}
-      <div className="spawn-cta">
-        <div className="cta-inner">
-          <div>
-            <div className="cta-eyebrow">Ready to activate</div>
-            <div className="cta-title">Your team is live.</div>
-            <div className="cta-sub">
-              Connect your phone number, email, and CRM to put your agents to work.
+            {/* Agent grid */}
+            <div className="agents-grid-header">
+              <span className="agents-grid-label">Your AI Team</span>
+              <span className="agents-grid-hint">Click any agent to open</span>
+            </div>
+            <div className="agents-grid">
+              {allAgents.map((agent, i) => (
+                <AgentCard
+                  key={agent.id}
+                  agent={agent}
+                  animDelay={i * 100}
+                  onClick={() => setSelectedAgent(agent)}
+                />
+              ))}
+              <AgentCard
+                key="custom-add"
+                agent={{ id: 'custom', name: '', icon: 'plus', role: '', tasks: [] }}
+                animDelay={allAgents.length * 100}
+                isCustom
+                onCustomSubmit={handleCustomSubmit}
+              />
             </div>
           </div>
-          <button className="cta-btn">Connect & Activate →</button>
-        </div>
-      </div>
-      {selectedAgent && (
-        <AgentModal
-          agent={selectedAgent}
-          businessName={business?.name}
-          onClose={() => setSelectedAgent(null)}
-          onSave={updated => {
-            setSelectedAgent(null)
-          }}
-        />
+
+          {/* Dark CTA */}
+          <div className="spawn-cta">
+            <div className="cta-inner">
+              <div>
+                <div className="cta-eyebrow">Ready to activate</div>
+                <div className="cta-title">Your team is live.</div>
+                <div className="cta-sub">
+                  Connect your phone number, email, and CRM to put your agents to work.
+                </div>
+              </div>
+              <button className="cta-btn">Connect & Activate →</button>
+            </div>
+          </div>
+        </>
       )}
     </div>
   )

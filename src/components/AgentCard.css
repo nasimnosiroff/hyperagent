@@ -1,20 +1,21 @@
 .agent-card {
   position: relative;
   background: var(--bg-card);
-  border: 1px solid var(--border);
+  border: 1.5px solid var(--border);
   border-radius: var(--radius-card);
-  padding: 24px;
+  padding: 22px 22px 20px;
   display: flex;
   flex-direction: column;
   gap: 8px;
   animation: slideInCard 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
-  box-shadow: var(--shadow-card);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.04);
   transition: box-shadow 0.2s, border-color 0.2s, transform 0.15s;
+  cursor: pointer;
 }
 .agent-card:hover {
-  box-shadow: var(--shadow-hover);
-  border-color: rgba(10,10,10,0.2);
-  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.09), 0 1px 4px rgba(0,0,0,0.06);
+  border-color: rgba(10,10,10,0.18);
+  transform: translateY(-2px);
 }
 
 .agent-card:active {
@@ -53,35 +54,40 @@
 
 /* Icon */
 .card-icon-wrap {
-  width: 40px;
-  height: 40px;
-  border-radius: 10px;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
   background: var(--bg-soft);
-  border: 1px solid var(--border);
+  border: 1.5px solid var(--border);
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 4px;
+  margin-bottom: 6px;
   color: var(--text);
   flex-shrink: 0;
+  transition: border-color 0.2s;
+}
+.agent-card:hover .card-icon-wrap {
+  border-color: rgba(10,10,10,0.2);
 }
 .card-icon-wrap svg {
-  width: 18px;
-  height: 18px;
+  width: 20px;
+  height: 20px;
 }
 
 .card-name {
-  font-size: 14px;
-  font-weight: 600;
+  font-size: 14.5px;
+  font-weight: 700;
   color: var(--text);
-  letter-spacing: -0.01em;
+  letter-spacing: -0.015em;
+  line-height: 1.2;
 }
 .card-role {
-  font-size: 11px;
+  font-size: 10.5px;
   color: var(--text-faint);
-  font-weight: 500;
+  font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.07em;
+  letter-spacing: 0.08em;
   margin-bottom: 6px;
 }
 
@@ -120,21 +126,31 @@
 
 /* Active badge */
 .active-badge {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 5px;
   font-size: 10px;
-  font-weight: 600;
+  font-weight: 700;
   color: #16A34A;
   letter-spacing: 0.07em;
   text-transform: uppercase;
-  margin-top: 8px;
+  margin-top: 10px;
+  padding: 4px 9px;
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: var(--radius-pill);
+  width: fit-content;
 }
 .active-dot {
   width: 5px;
   height: 5px;
   border-radius: 50%;
   background: #16A34A;
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
 }
 
 /* Custom card form */
