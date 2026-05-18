@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import LandingPage from './LandingPage'
+import HeroCubes from './HeroCubes'
 import './IntakeScreen.css'
 
 export default function IntakeScreen({ onSubmit }) {
@@ -39,47 +40,53 @@ export default function IntakeScreen({ onSubmit }) {
 
       {/* Hero */}
       <div className="intake-hero">
-        <div className="intake-eyebrow">
-          <span className="eyebrow-dot" />
-          AI Workforce for Any Business
+        <div className="intake-hero-left">
+          <div className="intake-eyebrow">
+            <span className="eyebrow-dot" />
+            AI Workforce for Any Business
+          </div>
+
+          <h1 className="intake-headline">
+            Hire AI employees who never sleep.
+          </h1>
+          <p className="intake-sub">
+            Paste your website or Google Maps link. We'll research your business
+            and build a custom AI team — no setup, no technical knowledge required.
+          </p>
+
+          <form className="intake-form" onSubmit={handleSubmit}>
+            <div className="input-wrap">
+              <span className="input-icon">
+                <LinkIcon />
+              </span>
+              <input
+                className="intake-input"
+                type="text"
+                placeholder="https://yourbusiness.com or Google Maps link"
+                value={value}
+                onChange={e => { setValue(e.target.value); setError('') }}
+                autoFocus
+                spellCheck={false}
+              />
+            </div>
+            {error && <p className="intake-error">{error}</p>}
+            <button className="intake-btn" type="submit">
+              Build My Team
+              <ArrowIcon />
+            </button>
+          </form>
+
+          <div className="proof-strip">
+            <span className="proof-item">Restaurants</span>
+            <span className="proof-item">Hospitals</span>
+            <span className="proof-item">Law Firms</span>
+            <span className="proof-item">Salons</span>
+            <span className="proof-item">Any Business</span>
+          </div>
         </div>
 
-        <h1 className="intake-headline">
-          Hire AI employees who never sleep.
-        </h1>
-        <p className="intake-sub">
-          Paste your website or Google Maps link. We'll research your business
-          and build a custom AI team — no setup, no technical knowledge required.
-        </p>
-
-        <form className="intake-form" onSubmit={handleSubmit}>
-          <div className="input-wrap">
-            <span className="input-icon">
-              <LinkIcon />
-            </span>
-            <input
-              className="intake-input"
-              type="text"
-              placeholder="https://yourbusiness.com or Google Maps link"
-              value={value}
-              onChange={e => { setValue(e.target.value); setError('') }}
-              autoFocus
-              spellCheck={false}
-            />
-          </div>
-          {error && <p className="intake-error">{error}</p>}
-          <button className="intake-btn" type="submit">
-            Build My Team
-            <ArrowIcon />
-          </button>
-        </form>
-
-        <div className="proof-strip">
-          <span className="proof-item">Restaurants</span>
-          <span className="proof-item">Hospitals</span>
-          <span className="proof-item">Law Firms</span>
-          <span className="proof-item">Salons</span>
-          <span className="proof-item">Any Business</span>
+        <div className="intake-hero-right">
+          <HeroCubes />
         </div>
       </div>
 

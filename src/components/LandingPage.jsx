@@ -1,6 +1,5 @@
 import { useEffect, useRef } from 'react'
 import * as THREE from 'three'
-import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js'
 import './LandingPage.css'
 
 // ── helpers ───────────────────────────────────────────────────────────────────
@@ -58,103 +57,14 @@ function formatNum(value, decimals, withCommas) {
 
 // ── component ──────────────────────────────────────────────────────────────────
 export default function LandingPage() {
-  const hero3dRef  = useRef(null)
   const globeRef   = useRef(null)
   const tileRefs   = useRef([])
 
   useEffect(() => {
     let stopped = false
 
-    // ── Hero 3D ──────────────────────────────────────────────────────────────
-    const heroMount = hero3dRef.current
-    let envCanvas = null
-
-    if (heroMount) {
-      try {
-        envCanvas = makeEnvCanvas()
-
-        const getSize = () => Math.max(320, Math.min(heroMount.clientWidth || 480, 560))
-        let s = getSize()
-        const scene = new THREE.Scene()
-        scene.background = null
-        const camera = new THREE.PerspectiveCamera(30, 1, 0.1, 100)
-        camera.position.set(0, 0, 11)
-        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true })
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
-        renderer.setSize(s, s)
-        renderer.toneMapping = THREE.ACESFilmicToneMapping
-        renderer.toneMappingExposure = 1.3
-        renderer.domElement.style.cssText = 'display:block;width:100%;height:100%'
-        heroMount.appendChild(renderer.domElement)
-
-        scene.environment = makeEnv(renderer, envCanvas)
-
-        const key = new THREE.DirectionalLight(0xffffff, 1.2); key.position.set(4, 6, 5); scene.add(key)
-        const fill = new THREE.DirectionalLight(0xa0c8ff, 0.6); fill.position.set(-5, -2, 3); scene.add(fill)
-        const rim  = new THREE.DirectionalLight(0xffb088, 0.5); rim.position.set(0, -5, -3); scene.add(rim)
-        scene.add(new THREE.AmbientLight(0xffffff, 0.2))
-
-        const group = new THREE.Group(); scene.add(group)
-        const geo = new RoundedBoxGeometry(1, 1, 1, 8, 0.16)
-
-        const makeMat = (hueShift = 0) => new THREE.MeshPhysicalMaterial({
-          color: new THREE.Color(0x0d0d0d), metalness: 1, roughness: 0.08,
-          envMapIntensity: 3, iridescence: 1, iridescenceIOR: 1.8,
-          iridescenceThicknessRange: [100 + hueShift, 1100 + hueShift],
-          clearcoat: 1, clearcoatRoughness: 0.04, reflectivity: 1,
-          anisotropy: 0.5, anisotropyRotation: Math.PI / 4,
-        })
-
-        const positions = [
-          { x: -1.55, y:  1.05, z:  0.4, rx:  0.25, ry: -0.4,  rz:  0.1,  hue:   0 },
-          { x:  0.15, y:  1.45, z: -0.5, rx: -0.15, ry:  0.5,  rz: -0.1,  hue: 120 },
-          { x:  1.60, y:  0.85, z:  0.2, rx:  0.3,  ry: -0.2,  rz:  0.2,  hue: 240 },
-          { x: -1.45, y: -0.95, z: -0.4, rx: -0.2,  ry:  0.6,  rz: -0.15, hue: 360 },
-          { x:  0.05, y: -1.40, z:  0.5, rx:  0.4,  ry: -0.5,  rz:  0.05, hue: 480 },
-          { x:  1.50, y: -0.70, z: -0.3, rx: -0.3,  ry:  0.3,  rz:  0.2,  hue: 600 },
-        ]
-        const mouse = { x: 0, y: 0, tx: 0, ty: 0 }
-        const cubes = positions.map((p, i) => {
-          const m = new THREE.Mesh(geo, makeMat(p.hue))
-          m.position.set(p.x, p.y, p.z); m.rotation.set(p.rx, p.ry, p.rz); m.scale.setScalar(1.1)
-          m.userData = { basePos: { ...p }, phase: i * 1.0 }; group.add(m); return m
-        })
-
-        const onMM = e => {
-          mouse.tx = (e.clientX - window.innerWidth / 2) / (window.innerWidth * 0.5)
-          mouse.ty = (e.clientY - window.innerHeight / 2) / (window.innerHeight * 0.5)
-        }
-        const onML = () => { mouse.tx = 0; mouse.ty = 0 }
-        window.addEventListener('mousemove', onMM)
-        window.addEventListener('mouseleave', onML)
-
-        let t = 0
-        function animHero() {
-          if (stopped) return
-          t += 0.005
-          mouse.x += (mouse.tx - mouse.x) * 0.05; mouse.y += (mouse.ty - mouse.y) * 0.05
-          group.rotation.y = Math.sin(t * 0.35) * 0.22 + mouse.x * 0.45
-          group.rotation.x = Math.cos(t * 0.28) * 0.04 - mouse.y * 0.25
-          cubes.forEach((c, i) => {
-            const b = c.userData.basePos; const ph = c.userData.phase
-            c.position.x = b.x + Math.cos(t * 1.1 + ph) * 0.03
-            c.position.y = b.y + Math.sin(t * 1.3 + ph) * 0.04
-            c.position.z = Math.sin(t * 0.7 + ph) * 0.08
-            c.rotation.y += 0.0025 + i * 0.0004
-            c.rotation.x += 0.0015 + (i % 2 ? 0.0006 : -0.0006)
-            c.rotation.z = Math.sin(t * 0.5 + ph) * 0.1
-            c.scale.setScalar(1.05)
-          })
-          renderer.render(scene, camera); requestAnimationFrame(animHero)
-        }
-        animHero()
-
-        const onHeroResize = () => { const ns = getSize(); renderer.setSize(ns, ns); camera.aspect = 1; camera.updateProjectionMatrix() }
-        window.addEventListener('resize', onHeroResize); setTimeout(onHeroResize, 100)
-      } catch (e) { console.error('[hero-3d]', e) }
-    }
-
     // ── Tile cubes (single shared renderer — avoids WebGL context limit) ────────
+    const envCanvas = makeEnvCanvas()
     if (envCanvas) {
       try {
         const TILE_PX = 200
@@ -449,16 +359,6 @@ export default function LandingPage() {
 
   return (
     <>
-      {/* ── Hero 3D Visual ──────────────────────────────────────────────────── */}
-      <div className="py-16" style={{ background: 'var(--bg)' }}>
-        <div className="max-w-7xl mx-auto px-6 flex justify-center">
-          <div
-            ref={hero3dRef}
-            style={{ aspectRatio: '1/1', width: '100%', maxWidth: '560px', background: 'transparent' }}
-          />
-        </div>
-      </div>
-
       {/* ── Trusted By ──────────────────────────────────────────────────────── */}
       <div className="max-w-7xl mx-auto px-6 pb-16">
         <p className="text-center text-sm mb-10 lp-font-mono uppercase tracking-widest" style={{ color: 'var(--text-muted)', letterSpacing: '0.1em' }}>
