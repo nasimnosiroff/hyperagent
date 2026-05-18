@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import LandingPage from './LandingPage'
 import './IntakeScreen.css'
 
 export default function IntakeScreen({ onSubmit }) {
@@ -17,7 +18,7 @@ export default function IntakeScreen({ onSubmit }) {
   }
 
   return (
-    <div className="intake-root">
+    <div className="intake-root" style={{ overflow: 'visible' }}>
       {/* Nav */}
       <nav className="intake-nav">
         <div className="nav-logo">
@@ -44,7 +45,7 @@ export default function IntakeScreen({ onSubmit }) {
         </div>
 
         <h1 className="intake-headline">
-          Turn your business into a connected one.
+          Hire AI employees who never sleep.
         </h1>
         <p className="intake-sub">
           Paste your website or Google Maps link. We'll research your business
@@ -81,6 +82,9 @@ export default function IntakeScreen({ onSubmit }) {
           <span className="proof-item">Any Business</span>
         </div>
       </div>
+
+      {/* Landing page sections */}
+      <LandingPage />
     </div>
   )
 }

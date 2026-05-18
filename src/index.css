@@ -30,6 +30,10 @@
   --shadow-hover: 0 4px 16px rgba(0,0,0,0.10);
 }
 
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 56px;
+}
 html, body, #root {
   height: 100%;
   width: 100%;
