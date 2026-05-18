@@ -103,6 +103,105 @@
   display: inline-block;
 }
 
+/* Research sources history panel */
+.spawn-sources {
+  margin-bottom: 28px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-btn);
+  overflow: hidden;
+  animation: fadeUp 0.35s ease both;
+  animation-delay: 0.1s;
+}
+.spawn-sources-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 10px 14px;
+  background: var(--bg-soft);
+  border: none;
+  cursor: pointer;
+  font-family: var(--font);
+  transition: background 0.15s;
+  text-align: left;
+}
+.spawn-sources-header:hover { background: #e4e2dd; }
+.spawn-sources-title {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+.spawn-sources-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 9px;
+  background: var(--border);
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text);
+}
+.spawn-sources-chevron {
+  font-size: 9px;
+  color: var(--text-faint);
+}
+.spawn-sources-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 0;
+  border-top: 1px solid var(--border);
+}
+.spawn-source-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 14px;
+  border-right: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  animation: fadeUp 0.22s ease both;
+  transition: background 0.12s;
+}
+.spawn-source-item:hover { background: var(--bg-soft); }
+.spawn-source-icon {
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  background: var(--bg-soft);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.spawn-source-info { flex: 1; min-width: 0; }
+.spawn-source-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 1px;
+}
+.spawn-source-url {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 2px;
+}
+.spawn-source-snippet {
+  font-size: 11px;
+  color: var(--text-faint);
+}
+
 /* Agent grid */
 .agents-grid {
   display: grid;

@@ -10,7 +10,7 @@ const RESEARCH_MESSAGES = [
   'Designing your agent team…',
 ]
 
-export default function ResearchScreen({ url, onBusinessFound, onAgentSpawned, onComplete }) {
+export default function ResearchScreen({ url, onBusinessFound, onAgentSpawned, onSourceFound, onComplete }) {
   const [messages, setMessages] = useState([RESEARCH_MESSAGES[0]])
   const [business, setBusiness] = useState(null)
   const [agentCount, setAgentCount] = useState(0)
@@ -35,6 +35,7 @@ export default function ResearchScreen({ url, onBusinessFound, onAgentSpawned, o
     analyzeUrl(url, (event) => {
       if (event.type === 'source_found') {
         setSources(prev => [...prev, event.data])
+        onSourceFound?.(event.data)
       } else if (event.type === 'business_identified') {
         clearInterval(msgInterval)
         setBusiness(event.data)

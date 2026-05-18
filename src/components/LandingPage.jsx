@@ -154,23 +154,31 @@ export default function LandingPage() {
       } catch (e) { console.error('[hero-3d]', e) }
     }
 
-    // ── Tile cubes ────────────────────────────────────────────────────────────
+    // ── Tile cubes (single shared renderer — avoids WebGL context limit) ────────
     if (envCanvas) {
-      tileRefs.current.forEach((el, idx) => {
-        if (!el) return
-        try {
-          const w = el.clientWidth || 80
-          const ts = new THREE.Scene(); ts.background = null
+      try {
+        const TILE_PX = 200
+        const tileRenderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, preserveDrawingBuffer: true })
+        tileRenderer.setPixelRatio(1)
+        tileRenderer.setSize(TILE_PX, TILE_PX)
+        tileRenderer.toneMapping = THREE.ACESFilmicToneMapping
+        tileRenderer.toneMappingExposure = 1.5
+
+        const sharedTileEnv = makeEnv(tileRenderer, envCanvas)
+
+        const tileData = tileRefs.current.map((el, idx) => {
+          if (!el) return null
+          const dpr = Math.min(window.devicePixelRatio, 2)
+          const w = Math.max(el.clientWidth, 80)
+          const c2d = document.createElement('canvas')
+          c2d.width = Math.round(w * dpr); c2d.height = Math.round(w * dpr)
+          c2d.style.cssText = 'display:block;width:100%;height:100%'
+          el.appendChild(c2d)
+          const ctx = c2d.getContext('2d')
+
+          const ts = new THREE.Scene()
+          ts.environment = sharedTileEnv
           const tc = new THREE.PerspectiveCamera(38, 1, 0.1, 100); tc.position.set(0, 0, 3)
-          const tr = new THREE.WebGLRenderer({ antialias: true, alpha: true })
-          tr.setPixelRatio(Math.min(window.devicePixelRatio, 2))
-          tr.setSize(w * 2.5, w * 2.5, false)
-          tr.toneMapping = THREE.ACESFilmicToneMapping; tr.toneMappingExposure = 1.5
-          tr.domElement.style.cssText = 'display:block;width:100%;height:100%'
-          el.appendChild(tr.domElement)
-
-          ts.environment = makeEnv(tr, envCanvas)
-
           const k = new THREE.DirectionalLight(0xffffff, 2); k.position.set(3, 4, 5); ts.add(k)
           const f = new THREE.DirectionalLight(0xc8d8ff, 1); f.position.set(-4, -2, 3); ts.add(f)
           const r = new THREE.DirectionalLight(0xffd5b0, 0.8); r.position.set(0, -4, -2); ts.add(r)
@@ -197,11 +205,22 @@ export default function LandingPage() {
           const tMesh = new THREE.Mesh(tGeo, tMat)
           tMesh.scale.setScalar(1.15); ts.add(tMesh)
           tMesh.rotation.set(-0.3 + exRX, exRY, exRZ)
-          function loopTile() { if (stopped) return; tMesh.rotation.y += 0.008; tr.render(ts, tc); requestAnimationFrame(loopTile) }
-          loopTile()
-          window.addEventListener('resize', () => { const nw = el.clientWidth || 80; tr.setSize(nw, nw) })
-        } catch (e) { console.error('[tile-cube ' + idx + ']', e) }
-      })
+          return { scene: ts, camera: tc, mesh: tMesh, ctx, canvas2d: c2d }
+        })
+
+        function loopTiles() {
+          if (stopped) return
+          tileData.forEach(tile => {
+            if (!tile) return
+            tile.mesh.rotation.y += 0.008
+            tileRenderer.render(tile.scene, tile.camera)
+            tile.ctx.clearRect(0, 0, tile.canvas2d.width, tile.canvas2d.height)
+            tile.ctx.drawImage(tileRenderer.domElement, 0, 0, tile.canvas2d.width, tile.canvas2d.height)
+          })
+          requestAnimationFrame(loopTiles)
+        }
+        loopTiles()
+      } catch (e) { console.error('[tile-cubes]', e) }
     }
 
     // ── Globe 3D ──────────────────────────────────────────────────────────────

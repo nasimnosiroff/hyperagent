@@ -9,11 +9,13 @@ export default function App() {
   const [url, setUrl] = useState('')
   const [business, setBusiness] = useState(null)
   const [agents, setAgents] = useState([])
+  const [sources, setSources] = useState([])
 
   const handleSubmit = useCallback((inputUrl) => {
     setUrl(inputUrl)
     setAgents([])
     setBusiness(null)
+    setSources([])
     setScreen('research')
   }, [])
 
@@ -25,6 +27,10 @@ export default function App() {
     setAgents(prev => [...prev, agent])
   }, [])
 
+  const handleSourceFound = useCallback((source) => {
+    setSources(prev => [...prev, source])
+  }, [])
+
   const handleSpawnComplete = useCallback(() => {
     setScreen('spawn')
   }, [])
@@ -34,6 +40,7 @@ export default function App() {
     setUrl('')
     setBusiness(null)
     setAgents([])
+    setSources([])
   }, [])
 
   return (
@@ -46,6 +53,7 @@ export default function App() {
           url={url}
           onBusinessFound={handleBusinessFound}
           onAgentSpawned={handleAgentSpawned}
+          onSourceFound={handleSourceFound}
           onComplete={handleSpawnComplete}
         />
       )}
@@ -53,6 +61,7 @@ export default function App() {
         <SpawnScreen
           business={business}
           agents={agents}
+          sources={sources}
           onReset={handleReset}
         />
       )}
