@@ -39,9 +39,12 @@ function makeEnv(renderer, envCanvas) {
 }
 
 export default function HeroCubes() {
-  const mountRef = useRef(null)
+  const mountRef  = useRef(null)
+  const startedRef = useRef(false)
 
   useEffect(() => {
+    if (startedRef.current) return
+    startedRef.current = true
     let stopped = false
     const mount = mountRef.current
     if (!mount) return

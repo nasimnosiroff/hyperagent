@@ -59,8 +59,11 @@ function formatNum(value, decimals, withCommas) {
 export default function LandingPage() {
   const globeRef   = useRef(null)
   const tileRefs   = useRef([])
+  const started    = useRef(false)
 
   useEffect(() => {
+    if (started.current) return
+    started.current = true
     let stopped = false
 
     // ── Tile cubes (single shared renderer — avoids WebGL context limit) ────────
@@ -72,7 +75,7 @@ export default function LandingPage() {
         tileRenderer.setPixelRatio(1)
         tileRenderer.setSize(TILE_PX, TILE_PX)
         tileRenderer.toneMapping = THREE.ACESFilmicToneMapping
-        tileRenderer.toneMappingExposure = 1.5
+        tileRenderer.toneMappingExposure = 2.8
 
         const sharedTileEnv = makeEnv(tileRenderer, envCanvas)
 
@@ -89,10 +92,10 @@ export default function LandingPage() {
           const ts = new THREE.Scene()
           ts.environment = sharedTileEnv
           const tc = new THREE.PerspectiveCamera(38, 1, 0.1, 100); tc.position.set(0, 0, 3)
-          const k = new THREE.DirectionalLight(0xffffff, 2); k.position.set(3, 4, 5); ts.add(k)
-          const f = new THREE.DirectionalLight(0xc8d8ff, 1); f.position.set(-4, -2, 3); ts.add(f)
-          const r = new THREE.DirectionalLight(0xffd5b0, 0.8); r.position.set(0, -4, -2); ts.add(r)
-          ts.add(new THREE.AmbientLight(0xffffff, 0.5))
+          const k = new THREE.DirectionalLight(0xffffff, 3.5); k.position.set(3, 4, 5); ts.add(k)
+          const f = new THREE.DirectionalLight(0xddeeff, 2.0); f.position.set(-4, -2, 3); ts.add(f)
+          const r = new THREE.DirectionalLight(0xffeedd, 1.5); r.position.set(0, -4, -2); ts.add(r)
+          ts.add(new THREE.AmbientLight(0xffffff, 2.5))
 
           let tGeo, exRX = 0, exRY = 0, exRZ = 0
           switch (idx) {
