@@ -146,6 +146,7 @@ export default function HeroCubes() {
 
     return () => {
       stopped = true
+      startedRef.current = false
       if (onMM) window.removeEventListener('mousemove', onMM)
       if (onML) window.removeEventListener('mouseleave', onML)
       if (onResize) window.removeEventListener('resize', onResize)

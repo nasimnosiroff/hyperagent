@@ -81,6 +81,7 @@ export default function LandingPage() {
 
         const tileData = tileRefs.current.map((el, idx) => {
           if (!el) return null
+          while (el.firstChild) el.removeChild(el.firstChild)
           const dpr = Math.min(window.devicePixelRatio, 2)
           const w = Math.max(el.clientWidth, 80)
           const c2d = document.createElement('canvas')
@@ -147,6 +148,7 @@ export default function LandingPage() {
         const gr = new THREE.WebGLRenderer({ antialias: true, alpha: true })
         gr.setPixelRatio(Math.min(window.devicePixelRatio, 2))
         gr.setSize(W, H, false); gr.domElement.style.cssText = 'display:block;width:100%;height:100%'
+        while (globeMount.firstChild) globeMount.removeChild(globeMount.firstChild)
         globeMount.appendChild(gr.domElement)
 
         const globe = new THREE.Group(); gs.add(globe); const R = 1
@@ -334,6 +336,7 @@ export default function LandingPage() {
 
     return () => {
       stopped = true
+      started.current = false
       ucObs.disconnect()
       statObs.disconnect()
     }
